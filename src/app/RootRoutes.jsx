@@ -13,6 +13,7 @@ import mapRoutes from "./views/map/MapRoutes";
 
 import orderRoutes from "./views/orders/OrderRoutes";
 import productRoutes from "./views/products/ProductRoutes";
+import inventoryRoutes from "./views/inventory/InventoryRoutes";
 
 const redirectRoute = [
   {
@@ -28,7 +29,7 @@ const errorRoute = [
   },
 ];
 
-const routes = [
+const devRoutes = [
   ...sessionRoutes,
   ...dashboardRoutes,
   ...materialRoutes,
@@ -36,10 +37,21 @@ const routes = [
   ...dragAndDropRoute,
   ...orderRoutes,
   ...productRoutes,
+  ...inventoryRoutes,
   ...formsRoutes,
   ...mapRoutes,
   ...redirectRoute,
   ...errorRoute,
 ];
 
-export default routes;
+const prodRoutes = [
+  ...sessionRoutes,
+  ...dashboardRoutes,
+  ...orderRoutes,
+  ...productRoutes,
+  ...inventoryRoutes,
+  ...redirectRoute,
+  ...errorRoute,
+];
+
+export default process.env.NODE_ENV === "development" ? devRoutes : prodRoutes;

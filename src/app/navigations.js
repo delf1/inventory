@@ -1,4 +1,4 @@
-export const navigations = [
+export const prodNavigations = [
   {
     name: "Analytics",
     path: "/analytics",
@@ -16,7 +16,35 @@ export const navigations = [
   },
   {
     name: "Inventory",
-    path: "/dashboard/inventory",
+    path: "/inventory",
+    icon: "store",
+  },
+  {
+    name: "Settings",
+    path: "/dashboard/settings",
+    icon: "settings",
+  },
+];
+
+export const devNavigations = [
+  {
+    name: "Analytics",
+    path: "/analytics",
+    icon: "dashboard",
+  },
+  {
+    name: "Orders",
+    path: "/orders",
+    icon: "receipt",
+  },
+  {
+    name: "Products",
+    path: "/products",
+    icon: "shopping_cart",
+  },
+  {
+    name: "Inventory",
+    path: "/inventory",
     icon: "store",
   },
   {
@@ -214,3 +242,6 @@ export const navigations = [
     path: "/map",
   },
 ];
+
+export const navigations =
+  process.env.NODE_ENV === "development" ? devNavigations : prodNavigations;

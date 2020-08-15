@@ -19,6 +19,7 @@ export const getAllOrders = () => (dispatch) => {
   orderApi
     .getAllOrders()
     .then((orders) => {
+      console.log(orders);
       dispatch({
         type: LOAD_ORDERS_SUCCESS,
         orders,
@@ -40,6 +41,7 @@ export const saveOrder = (order) => (dispatch) => {
         .then(() =>
           dispatch({
             type: CREATE_ORDER_SUCCESS,
+            order,
           })
         )
         .catch((err) =>
@@ -53,6 +55,7 @@ export const saveOrder = (order) => (dispatch) => {
         .then(() =>
           dispatch({
             type: UPDATE_ORDER_SUCCESS,
+            order,
           })
         )
         .catch((err) =>
@@ -69,6 +72,7 @@ export const deleteOrder = (id) => (dispatch) => {
     .then(
       dispatch({
         type: DELETE_ORDER_SUCCESS,
+        id,
       })
     )
     .catch(

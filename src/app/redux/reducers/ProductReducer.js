@@ -4,6 +4,7 @@ import {
   UPDATE_PRODUCT_SUCCESS,
   DELETE_PRODUCT_SUCCESS,
 } from "../actions/ProductActions";
+
 const initialState = {};
 
 const ProductReducer = (state = initialState, action) => {
@@ -17,7 +18,7 @@ const ProductReducer = (state = initialState, action) => {
         product.id === action.product.id ? action.product : product
       );
     case DELETE_PRODUCT_SUCCESS:
-      return state.filter((product) => product.id !== action.product.id);
+      return state.filter((product) => product.id !== action.id);
     default:
       return state;
   }

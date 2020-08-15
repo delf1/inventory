@@ -15,7 +15,7 @@ export const convertToCurrency = createSelector([getOrders], (orders) => {
   });
 });
 
-export const joinOrderProducts = createSelector(
+export const enrichedOrder = createSelector(
   [convertToCurrency, getProducts],
   (orders, products) => {
     return orders.map((order) => {

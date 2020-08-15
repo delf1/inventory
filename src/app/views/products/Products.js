@@ -25,7 +25,7 @@ const Products = ({ products, getAllProducts }) => {
       </div>
       <div className="py-2" />
       <Grid container>
-        <Grid lg={8} sm={12}>
+        <Grid item lg={8} sm={12}>
           <SimpleCard title="Products">
             <ProductsTable products={products} />
           </SimpleCard>

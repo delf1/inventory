@@ -21,7 +21,7 @@ export const getAllProducts = () => (dispatch) => {
     .then((products) => {
       dispatch({
         type: LOAD_PRODUCTS_SUCCESS,
-        products: products,
+        products,
       });
     })
     .catch((error) => {
@@ -40,6 +40,7 @@ export const saveProduct = (product) => (dispatch) => {
         .then(() =>
           dispatch({
             type: CREATE_PRODUCT_SUCCESS,
+            product,
           })
         )
         .catch((err) =>
@@ -53,6 +54,7 @@ export const saveProduct = (product) => (dispatch) => {
         .then(() =>
           dispatch({
             type: UPDATE_PRODUCT_SUCCESS,
+            product,
           })
         )
         .catch((err) =>
@@ -69,6 +71,7 @@ export const deleteProduct = (id) => (dispatch) => {
     .then(
       dispatch({
         type: DELETE_PRODUCT_SUCCESS,
+        id,
       })
     )
     .catch(

@@ -6,7 +6,7 @@ import OrdersTable from "./OrdersTable";
 import { connect } from "react-redux";
 import { getAllOrders } from "../../redux/actions/OrderActions";
 import { getAllProducts } from "../../redux/actions/ProductActions";
-import { joinOrderProducts } from "../../redux/selectors/OrderSelector";
+import { enrichedOrder } from "../../redux/selectors/OrderSelector";
 import { status } from "../../utils/orderUtils";
 
 const Orders = ({ orders, getAllOrders, getAllProducts }) => {
@@ -49,7 +49,7 @@ const Orders = ({ orders, getAllOrders, getAllProducts }) => {
 };
 
 const mapStateToProps = (state) => ({
-  orders: joinOrderProducts(state),
+  orders: enrichedOrder(state),
 });
 
 export default connect(mapStateToProps, { getAllOrders, getAllProducts })(

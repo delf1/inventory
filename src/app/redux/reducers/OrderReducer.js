@@ -4,6 +4,7 @@ import {
   UPDATE_ORDER_SUCCESS,
   DELETE_ORDER_SUCCESS,
 } from "../actions/OrderActions";
+
 const initialState = [];
 
 const OrderReducer = (state = initialState, action) => {
@@ -17,7 +18,7 @@ const OrderReducer = (state = initialState, action) => {
         order.id === action.order.id ? action.order : order
       );
     case DELETE_ORDER_SUCCESS:
-      return state.filter((order) => order.id !== action.order.id);
+      return state.filter((order) => order.id !== action.id);
     default:
       return state;
   }
