@@ -21,7 +21,7 @@ export const prodNavigations = [
   },
   {
     name: "Settings",
-    path: "/dashboard/settings",
+    path: "/settings",
     icon: "settings",
   },
 ];
@@ -49,7 +49,7 @@ export const devNavigations = [
   },
   {
     name: "Settings",
-    path: "/dashboard/settings",
+    path: "/settings",
     icon: "settings",
   },
   {

@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import { MatxMenu } from "matx";
 import { isMdScreen, classList } from "utils";
 import { Link } from "react-router-dom";
-import NewOrderPopup from "../SharedCompoents/NewOrderDialog";
+import NewOrderPopup from "../../shared/NewOrderDialog";
 
 const styles = (theme) => ({
   topbar: {

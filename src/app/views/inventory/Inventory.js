@@ -22,6 +22,7 @@ const Inventory = ({ inventory, getAllInventory }) => {
         <Button variant="contained" color="primary">
           Add Inventory
         </Button>
+        &nbsp;
         <Button variant="contained" color="primary">
           New Inventory Item
         </Button>

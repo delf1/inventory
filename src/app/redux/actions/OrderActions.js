@@ -19,7 +19,6 @@ export const getAllOrders = () => (dispatch) => {
   orderApi
     .getAllOrders()
     .then((orders) => {
-      console.log(orders);
       dispatch({
         type: LOAD_ORDERS_SUCCESS,
         orders,

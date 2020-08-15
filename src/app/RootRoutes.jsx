@@ -14,6 +14,7 @@ import mapRoutes from "./views/map/MapRoutes";
 import orderRoutes from "./views/orders/OrderRoutes";
 import productRoutes from "./views/products/ProductRoutes";
 import inventoryRoutes from "./views/inventory/InventoryRoutes";
+import settingsRoutes from "./views/settings/SettingsRoutes";
 
 const redirectRoute = [
   {
@@ -38,6 +39,7 @@ const devRoutes = [
   ...orderRoutes,
   ...productRoutes,
   ...inventoryRoutes,
+  ...settingsRoutes,
   ...formsRoutes,
   ...mapRoutes,
   ...redirectRoute,
@@ -50,6 +52,7 @@ const prodRoutes = [
   ...orderRoutes,
   ...productRoutes,
   ...inventoryRoutes,
+  ...settingsRoutes,
   ...redirectRoute,
   ...errorRoute,
 ];
