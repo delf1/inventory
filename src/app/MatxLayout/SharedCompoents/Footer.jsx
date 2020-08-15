@@ -11,13 +11,11 @@ const Footer = ({ theme, settings }) => {
       <AppBar color="primary" position="static">
         <Toolbar className="footer flex items-center">
           <div className="flex items-center container w-full">
-            <p className="m-0">
-              Privacy | Other Stuff
-            </p>
+            <p className="m-0">Privacy | Other Stuff</p>
             <span className="m-auto"></span>
-            <p className="m-0">
+            {/* <p className="m-0">
               Dashboard design by <a href="http://ui-lib.com">UI Lib</a>
-            </p>
+            </p> */}
           </div>
         </Toolbar>
       </AppBar>
@@ -26,11 +24,11 @@ const Footer = ({ theme, settings }) => {
 };
 
 Footer.propTypes = {
-  settings: PropTypes.object.isRequired
+  settings: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  settings: state.layout.settings
+const mapStateToProps = (state) => ({
+  settings: state.layout.settings,
 });
 
 export default withStyles(
