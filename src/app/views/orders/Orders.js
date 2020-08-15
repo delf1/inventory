@@ -5,15 +5,22 @@ import OrdersTable from "./OrdersTable";
 
 import { connect } from "react-redux";
 import { getAllOrders } from "../../redux/actions/OrderActions";
-import { convertToCurrency } from "../../redux/selectors/OrderSelector";
+import { getAllProducts } from "../../redux/actions/ProductActions";
+import { joinOrderProducts } from "../../redux/selectors/OrderSelector";
 import { status } from "../../utils/orderUtils";
 
-const Orders = ({ orders, getAllOrders }) => {
+const Orders = ({ orders, getAllOrders, getAllProducts }) => {
   useEffect(() => {
     if (orders.length === 0) {
       getAllOrders();
     }
   }, [orders.length, getAllOrders]);
+
+  useEffect(() => {
+    if (orders.length === 0) {
+      getAllProducts();
+    }
+  }, [orders.length, getAllProducts]);
 
   return (
     <div className="m-sm-30">
@@ -42,7 +49,9 @@ const Orders = ({ orders, getAllOrders }) => {
 };
 
 const mapStateToProps = (state) => ({
-  orders: convertToCurrency(state),
+  orders: joinOrderProducts(state),
 });
 
-export default connect(mapStateToProps, { getAllOrders })(Orders);
+export default connect(mapStateToProps, { getAllOrders, getAllProducts })(
+  Orders
+);

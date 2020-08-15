@@ -27,6 +27,7 @@ const useRowStyles = makeStyles({
 const Row = ({ order }) => {
   const [open, setOpen] = useState(false);
   const classes = useRowStyles();
+  console.log(order);
   return (
     <>
       <TableRow className={classes.root}>
@@ -73,21 +74,27 @@ const Row = ({ order }) => {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>ID</TableCell>
+                    <TableCell>Name</TableCell>
                     <TableCell align="right">Quantity</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
+                    <TableCell align="right">Total price</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {order.items.map(({ id, quantity, price }) => (
-                    <TableRow key={id}>
-                      <TableCell>{id}</TableCell>
-                      <TableCell align="right">{quantity}</TableCell>
-                      <TableCell align="right">
-                        {price.multiply(quantity).format()}
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {order.items
+                    .sort((i1, i2) => {
+                      if (i1.name === undefined || i2.name === undefined) {
+                        return i1.id - i2.id;
+                      } else return i1.name.localeCompare(i2.name);
+                    })
+                    .map(({ id, name, quantity, price }) => (
+                      <TableRow key={id}>
+                        <TableCell>{name}</TableCell>
+                        <TableCell align="right">{quantity}</TableCell>
+                        <TableCell align="right">
+                          {price.multiply(quantity).format()}
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </Box>
@@ -119,48 +126,46 @@ const OrdersTable = ({ orders }) => {
   const classes = useStyles();
 
   return (
-    <div className="w-full overflow">
-      <TableContainer>
-        <Table aria-label="collapsible table" className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              <TableCell className="px-0">ID</TableCell>
-              <TableCell className="px-0">Customer Name</TableCell>
-              <TableCell className="px-0">Delivery Date</TableCell>
-              <TableCell className="px-0">Total</TableCell>
-              <TableCell className="px-0" align="center">
-                Action
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {orders
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((order, index) => (
-                <Row order={order} key={index} />
-              ))}
-          </TableBody>
-        </Table>
+    <TableContainer>
+      <Table aria-label="collapsible table" className={classes.table}>
+        <TableHead>
+          <TableRow>
+            <TableCell />
+            <TableCell className="px-0">ID</TableCell>
+            <TableCell className="px-0">Customer Name</TableCell>
+            <TableCell className="px-0">Delivery Date</TableCell>
+            <TableCell className="px-0">Total</TableCell>
+            <TableCell className="px-0" align="center">
+              Action
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {orders
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((order, index) => (
+              <Row order={order} key={index} />
+            ))}
+        </TableBody>
+      </Table>
 
-        <TablePagination
-          className="px-4"
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={orders.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            "aria-label": "Previous Page",
-          }}
-          nextIconButtonProps={{
-            "aria-label": "Next Page",
-          }}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </TableContainer>
-    </div>
+      <TablePagination
+        className="px-4"
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={orders.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        backIconButtonProps={{
+          "aria-label": "Previous Page",
+        }}
+        nextIconButtonProps={{
+          "aria-label": "Next Page",
+        }}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
+    </TableContainer>
   );
 };
 

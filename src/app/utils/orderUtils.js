@@ -15,12 +15,14 @@ export const getSummaryByItem = (orders) => {
       const tmp = map[item.id];
       map[item.id] = tmp
         ? {
+            name: item.name,
             quantity: tmp.quantity + item.quantity,
             revenue: currency(tmp.revenue, { symbol: "USD " }).add(
               item.price.multiply(item.quantity)
             ),
           }
         : {
+            name: item.name,
             quantity: item.quantity,
             revenue: item.price.multiply(item.quantity),
           };

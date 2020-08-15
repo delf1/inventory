@@ -5,10 +5,9 @@ import { withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { classList } from "utils";
 import MatxCustomizer from "../MatxCustomizer/MatxCustomizer";
-import ShoppingCart from "../ShoppingCart";
 const width = "50px";
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     position: "fixed",
     height: "100vh",
@@ -22,23 +21,23 @@ const styles = theme => ({
     boxShadow: theme.shadows[8],
     backgroundColor: theme.palette.primary.main,
     zIndex: 98,
-    transition: "all 0.15s ease"
+    transition: "all 0.15s ease",
   },
   "@global": {
     "@media screen and (min-width: 767px)": {
       ".content-wrap, .layout2.layout-contained, .layout2.layout-full": {
-        marginRight: width
+        marginRight: width,
       },
       ".matx-customizer": {
-        right: width
-      }
+        right: width,
+      },
     },
     "@media screen and (max-width: 959px)": {
       ".toolbar-menu-wrap .menu-area": {
-        width: `calc(100% - ${width})`
-      }
-    }
-  }
+        width: `calc(100% - ${width})`,
+      },
+    },
+  },
 });
 
 class SecondarySidebarContent extends Component {
@@ -51,15 +50,13 @@ class SecondarySidebarContent extends Component {
           classes.root +
           " " +
           classList({
-            "secondary-sidebar": true
+            "secondary-sidebar": true,
           })
         }
       >
         <span className="m-auto"></span>
 
         <MatxCustomizer />
-
-        <ShoppingCart />
 
         <Link to="/chat">
           <IconButton size="small" aria-label="delete" className="my-3">
@@ -73,8 +70,8 @@ class SecondarySidebarContent extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  settings: state.layout.settings
+const mapStateToProps = (state) => ({
+  settings: state.layout.settings,
 });
 
 export default withStyles(styles, { withTheme: true })(

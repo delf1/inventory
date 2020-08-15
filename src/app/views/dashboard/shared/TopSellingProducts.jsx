@@ -1,8 +1,6 @@
 import React from "react";
 import {
   Card,
-  Icon,
-  IconButton,
   Table,
   TableHead,
   TableRow,
@@ -11,39 +9,6 @@ import {
 } from "@material-ui/core";
 
 const TopSellingProducts = ({ list = [] }) => {
-  const productList = [
-    {
-      imgUrl: "/assets/images/products/headphone-2.jpg",
-      name: "earphone",
-      price: 100,
-      available: 15,
-    },
-    {
-      imgUrl: "/assets/images/products/headphone-3.jpg",
-      name: "earphone",
-      price: 1500,
-      available: 30,
-    },
-    {
-      imgUrl: "/assets/images/products/iphone-2.jpg",
-      name: "iPhone x",
-      price: 1900,
-      available: 35,
-    },
-    {
-      imgUrl: "/assets/images/products/iphone-1.jpg",
-      name: "iPhone x",
-      price: 100,
-      available: 0,
-    },
-    {
-      imgUrl: "/assets/images/products/headphone-3.jpg",
-      name: "Head phone",
-      price: 1190,
-      available: 5,
-    },
-  ];
-
   return (
     <Card elevation={3} className="pt-5 mb-6">
       <div className="card-title px-6 mb-3">
@@ -74,7 +39,7 @@ const TopSellingProducts = ({ list = [] }) => {
                       src={product.imgUrl}
                       alt="user"
                     /> */}
-                    <p className="m-0 ml-8">{product.id}</p>
+                    {product.name}
                   </div>
                 </TableCell>
                 <TableCell className="px-0 capitalize" align="left" colSpan={2}>

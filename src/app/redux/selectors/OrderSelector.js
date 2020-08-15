@@ -1,7 +1,8 @@
 import { createSelector } from "reselect";
 import currency from "currency.js";
+import { getProducts } from "./ProductSelector";
 
-const getOrders = (state) => state.orders;
+export const getOrders = (state) => state.orders;
 
 export const convertToCurrency = createSelector([getOrders], (orders) => {
   return orders.map((order) => {
@@ -13,3 +14,17 @@ export const convertToCurrency = createSelector([getOrders], (orders) => {
     return { ...order, items };
   });
 });
+
+export const joinOrderProducts = createSelector(
+  [convertToCurrency, getProducts],
+  (orders, products) => {
+    return orders.map((order) => {
+      const items = order.items.map((item) => ({
+        ...item,
+        ...products[item.id],
+      }));
+
+      return { ...order, items };
+    });
+  }
+);

@@ -8,17 +8,22 @@ import UpcomingOrder from "./shared/UpcomingOrder";
 import { withStyles } from "@material-ui/styles";
 import { connect } from "react-redux";
 import { getAllOrders } from "../../redux/actions/OrderActions";
-import { convertToCurrency } from "../../redux/selectors/OrderSelector";
+import { getAllProducts } from "../../redux/actions/ProductActions";
+import { joinOrderProducts } from "../../redux/selectors/OrderSelector";
 import {
   getItemList,
   calculateOrderTotal,
   zeroValue,
 } from "../../utils/orderUtils";
 
-const Dashboard1 = ({ orders, getAllOrders }) => {
+const Dashboard1 = ({ orders, getAllOrders, getAllProducts }) => {
   useEffect(() => {
     getAllOrders();
-  }, []);
+  }, [getAllOrders]);
+
+  useEffect(() => {
+    getAllProducts();
+  }, [getAllProducts]);
 
   return (
     <Fragment>
@@ -87,10 +92,10 @@ const Dashboard1 = ({ orders, getAllOrders }) => {
 };
 
 const mapStateToProps = (state) => ({
-  orders: convertToCurrency(state),
+  orders: joinOrderProducts(state),
 });
 
 export default withStyles(
   {},
   { withTheme: true }
-)(connect(mapStateToProps, { getAllOrders })(Dashboard1));
+)(connect(mapStateToProps, { getAllOrders, getAllProducts })(Dashboard1));
