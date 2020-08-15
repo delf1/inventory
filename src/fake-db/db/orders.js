@@ -5,7 +5,7 @@ const OrdersDB = {
   ordersList: [
     {
       id: 1,
-      deliveryDate: new Date(),
+      deliveryDate: new Date().toISOString(),
       items: [{ id: 1, quantity: 2, price: 100 }],
       customer: {
         name: "A",
@@ -15,7 +15,7 @@ const OrdersDB = {
     },
     {
       id: 2,
-      deliveryDate: new Date(),
+      deliveryDate: new Date().toISOString(),
       items: [
         { id: 1, quantity: 2, price: 100.1 },
         { id: 2, quantity: 5, price: 30 },
@@ -28,7 +28,7 @@ const OrdersDB = {
     },
     {
       id: 3,
-      deliveryDate: new Date(),
+      deliveryDate: new Date().toISOString(),
       items: [
         { id: 1, quantity: 4, price: 38.2 },
         { id: 2, quantity: 10, price: 35.5 },
@@ -57,6 +57,9 @@ Mock.onGet("/api/orders/").reply(async () => {
 
 Mock.onPost("/api/orders/").reply(async (config) => {
   id++;
-  OrdersDB.ordersList = [...OrdersDB.ordersList, { ...config.data, id }];
+  OrdersDB.ordersList = [
+    ...OrdersDB.ordersList,
+    { ...JSON.parse(config.data), id },
+  ];
   return [200, { data: { id } }];
 });

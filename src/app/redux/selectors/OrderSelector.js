@@ -5,6 +5,7 @@ import { getProducts } from "./ProductSelector";
 export const getOrders = (state) => state.orders;
 
 export const convertToCurrency = createSelector([getOrders], (orders) => {
+  console.log(orders);
   return orders.map((order) => {
     const items = order.items.map((item) => ({
       ...item,

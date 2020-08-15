@@ -16,11 +16,16 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
+import { zeroValue } from "../utils/orderUtils";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
+  },
+  productFormControl: {
+    margin: theme.spacing(1),
+    minWidth: 180,
   },
   addButton: {
     alignSelf: "flex-end",
@@ -40,6 +45,9 @@ const ItemsTable = ({ items, handleRemoveItem }) => {
               Quantity
             </TableCell>
             <TableCell className="px-0" colSpan={1}>
+              Price
+            </TableCell>
+            <TableCell className="px-0" colSpan={1}>
               Action
             </TableCell>
           </TableRow>
@@ -52,6 +60,9 @@ const ItemsTable = ({ items, handleRemoveItem }) => {
               </TableCell>
               <TableCell className="px-0 capitalize" align="left" colSpan={1}>
                 {item.quantity}
+              </TableCell>
+              <TableCell className="px-0 capitalize" align="left" colSpan={1}>
+                {zeroValue.add(item.price).format()}
               </TableCell>
               <TableCell className="px-0 capitalize" align="left" colSpan={1}>
                 <IconButton onClick={() => handleRemoveItem(item.id)}>
@@ -79,6 +90,7 @@ const NewOrderDialogItems = ({
 
   const [selectedItemId, setSelectedItemId] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [price, setPrice] = useState("");
 
   const handleItemChange = (event) => {
     const target = event.target;
@@ -90,13 +102,20 @@ const NewOrderDialogItems = ({
     setQuantity(target.value);
   };
 
+  const handlePriceChange = (event) => {
+    const target = event.target;
+    setPrice(target.value);
+  };
+
   const handleAddItemInternal = () => {
     if (selectedItemId.length !== 0 && quantity.length !== 0 && quantity > 0) {
       setSelectedItemId("");
       setQuantity("");
+      setPrice("");
       handleAddItem({
         id: selectedItemId,
-        quantity,
+        quantity: Number(quantity),
+        price: Number(price),
       });
     }
   };
@@ -108,8 +127,8 @@ const NewOrderDialogItems = ({
       onError={(errors) => null}
     >
       <Grid container spacing={2}>
-        <Grid item lg={5} md={5} sm={12} xs={12}>
-          <FormControl className={classes.formControl}>
+        <Grid item lg={4} md={6} sm={12} xs={12}>
+          <FormControl className={classes.productFormControl}>
             <InputLabel id="demo-simple-select-label">Product</InputLabel>
             <Select
               labelId="demo-simple-select-label"
@@ -125,7 +144,7 @@ const NewOrderDialogItems = ({
             </Select>
           </FormControl>
         </Grid>
-        <Grid item lg={4} md={4} sm={12} xs={12}>
+        <Grid item lg={3} md={6} sm={12} xs={12}>
           <TextValidator
             className={classes.formControl}
             label="Quantity"
@@ -137,7 +156,19 @@ const NewOrderDialogItems = ({
             errorMessages={["Please enter a quantity"]}
           />
         </Grid>
-        <Grid item lg={3} md={3} sm={12} xs={12} className={classes.addButton}>
+        <Grid item lg={3} md={6} sm={12} xs={12}>
+          <TextValidator
+            className={classes.formControl}
+            label="Price"
+            onChange={handlePriceChange}
+            value={price}
+            type="number"
+            name="price"
+            disabled={selectedItemId.length === 0}
+            errorMessages={["Please enter a price"]}
+          />
+        </Grid>
+        <Grid item lg={2} md={6} sm={12} xs={12} className={classes.addButton}>
           <Button
             onClick={handleAddItemInternal}
             variant="outlined"
