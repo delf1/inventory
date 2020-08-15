@@ -14,7 +14,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { calculateOrderTotal } from "../../utils/orderUtils";
 
 const useRowStyles = makeStyles({
   root: {
@@ -24,8 +23,8 @@ const useRowStyles = makeStyles({
   },
 });
 
-const Row = ({ order }) => {
-  const { id, items = [], customer, deliveryDate = new Date() } = order;
+const Row = ({ product }) => {
+  const { ingredients = [] } = product;
   const [open, setOpen] = useState(false);
   const classes = useRowStyles();
   return (
@@ -41,21 +40,9 @@ const Row = ({ order }) => {
           </IconButton>
         </TableCell>
         <TableCell className="px-0 capitalize" align="left">
-          {id}
-        </TableCell>
-        <TableCell className="px-0 capitalize" align="left">
-          {customer.name}
-        </TableCell>
-        <TableCell className="px-0 capitalize" align="left">
-          {deliveryDate.toISOString().substring(0, 10)}
-        </TableCell>
-        <TableCell className="px-0 capitalize">
-          {calculateOrderTotal(order).format()}
+          {product.name}
         </TableCell>
         <TableCell className="px-0" align="center">
-          <IconButton>
-            <Icon style={{ color: "green" }}>done</Icon>
-          </IconButton>
           <IconButton>
             <Icon color="primary">edit</Icon>
           </IconButton>
@@ -65,34 +52,34 @@ const Row = ({ order }) => {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={4}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Typography variant="h6" gutterBottom component="div">
-                Items
+                Ingredients
               </Typography>
-              <Table size="small" aria-label="items">
+              <Table size="small" aria-label="ingredients">
                 <TableHead>
                   <TableRow>
                     <TableCell>Name</TableCell>
                     <TableCell align="right">Quantity</TableCell>
-                    <TableCell align="right">Total price</TableCell>
+                    <TableCell align="right">Available</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {items
+                  {ingredients
                     .sort((i1, i2) => {
                       if (i1.name === undefined || i2.name === undefined) {
                         return i1.id - i2.id;
                       } else return i1.name.localeCompare(i2.name);
                     })
-                    .map(({ id, name, quantity, price }) => (
+                    .map(({ id, name, quantity, unit, available }) => (
                       <TableRow key={id}>
-                        <TableCell>{name}</TableCell>
-                        <TableCell align="right">{quantity}</TableCell>
+                        <TableCell>{id}</TableCell>
                         <TableCell align="right">
-                          {price.multiply(quantity).format()}
+                          {quantity} {unit}
                         </TableCell>
+                        <TableCell align="right">{available}</TableCell>
                       </TableRow>
                     ))}
                 </TableBody>
@@ -107,11 +94,11 @@ const Row = ({ order }) => {
 
 const useStyles = makeStyles((theme) => ({
   table: {
-    minWidth: "600px",
+    minWidth: "100px",
   },
 }));
 
-const OrdersTable = ({ orders }) => {
+const ProductsTable = ({ products }) => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
 
@@ -131,20 +118,17 @@ const OrdersTable = ({ orders }) => {
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell className="px-0">ID</TableCell>
-            <TableCell className="px-0">Customer Name</TableCell>
-            <TableCell className="px-0">Delivery Date</TableCell>
-            <TableCell className="px-0">Total</TableCell>
+            <TableCell className="px-0">Name</TableCell>
             <TableCell className="px-0" align="center">
               Action
             </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {orders
+          {Object.values(products)
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((order, index) => (
-              <Row order={order} key={index} />
+            .map((product, index) => (
+              <Row product={product} key={index} />
             ))}
         </TableBody>
       </Table>
@@ -153,7 +137,7 @@ const OrdersTable = ({ orders }) => {
         className="px-4"
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={orders.length}
+        count={Object.keys(products).length}
         rowsPerPage={rowsPerPage}
         page={page}
         backIconButtonProps={{
@@ -169,4 +153,4 @@ const OrdersTable = ({ orders }) => {
   );
 };
 
-export default OrdersTable;
+export default ProductsTable;

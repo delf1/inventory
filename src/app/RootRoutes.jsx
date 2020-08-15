@@ -12,6 +12,7 @@ import formsRoutes from "./views/forms/FormsRoutes";
 import mapRoutes from "./views/map/MapRoutes";
 
 import orderRoutes from "./views/orders/OrderRoutes";
+import productRoutes from "./views/products/ProductRoutes";
 
 const redirectRoute = [
   {
@@ -34,6 +35,7 @@ const routes = [
   ...utilitiesRoutes,
   ...dragAndDropRoute,
   ...orderRoutes,
+  ...productRoutes,
   ...formsRoutes,
   ...mapRoutes,
   ...redirectRoute,

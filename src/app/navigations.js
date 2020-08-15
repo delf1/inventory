@@ -11,7 +11,7 @@ export const navigations = [
   },
   {
     name: "Products",
-    path: "/dashboard/products",
+    path: "/products",
     icon: "shopping_cart",
   },
   {
