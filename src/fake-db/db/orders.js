@@ -43,6 +43,8 @@ const OrdersDB = {
   ],
 };
 
+let id = 3;
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -51,4 +53,10 @@ Mock.onGet("/api/orders/").reply(async () => {
   const response = OrdersDB.ordersList;
   await sleep(1000);
   return [200, response];
+});
+
+Mock.onPost("/api/orders/").reply(async (config) => {
+  id++;
+  OrdersDB.ordersList = [...OrdersDB.ordersList, { ...config.data, id }];
+  return [200, { data: { id } }];
 });

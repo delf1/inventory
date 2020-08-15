@@ -34,9 +34,9 @@ export const getAllProducts = () => (dispatch) => {
 };
 
 export const saveProduct = (product) => (dispatch) => {
-  product.id
+  product.id === undefined
     ? productApi
-        .updateProduct(product)
+        .createProduct(product)
         .then(() =>
           dispatch({
             type: CREATE_PRODUCT_SUCCESS,
@@ -50,7 +50,7 @@ export const saveProduct = (product) => (dispatch) => {
           })
         )
     : productApi
-        .createProduct(product)
+        .updateProduct(product)
         .then(() =>
           dispatch({
             type: UPDATE_PRODUCT_SUCCESS,

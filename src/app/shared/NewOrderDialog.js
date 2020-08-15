@@ -18,6 +18,8 @@ import Slide from "@material-ui/core/Slide";
 import NewOrderDialogDetails from "./NewOrderDialogDetails";
 import NewOrderDialogItems from "./NewOrderDialogItems";
 import { getProducts } from "./../redux/selectors/ProductSelector";
+import { saveOrder } from "./../redux/actions/OrderActions";
+import { status } from "../../app/utils/orderUtils";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -30,10 +32,11 @@ const NewOrderDialog = ({
   settings,
   products,
   name,
-  deliveryDate,
+  deliveryDate = new Date(),
   mobile,
-  deliveryMethod,
-  items,
+  method,
+  items = [],
+  saveOrder,
 }) => {
   const parentThemePalette = theme.palette;
 
@@ -42,23 +45,24 @@ const NewOrderDialog = ({
     name,
     deliveryDate,
     mobile,
-    deliveryMethod,
-    items: [],
+    method,
+    items,
   });
 
   const [activeStep, setActiveStep] = React.useState(0);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
-    // console.log("submitted");
-    // console.log(event);
+  const handleSubmit = () => {
+    saveOrder({
+      deliveryDate: values.deliveryDate,
+      items: values.items,
+      customer: { name: values.name, mobile: values.mobile },
+      method: values.method,
+      status: status.pending,
+    });
   };
 
   const handleChange = (event) => {
@@ -67,13 +71,14 @@ const NewOrderDialog = ({
   };
 
   const handleDateChange = (date) => {
-    // console.log(date);
-
-    setValues({ ...values, date });
+    setValues({ ...values, deliveryDate: date });
   };
 
   const handleAddItem = (item) => {
-    setValues({ ...values, items: [...values.items, item] });
+    setValues({
+      ...values,
+      items: [...values.items, { ...item, name: products[item.id].name }],
+    });
   };
 
   const handleRemoveItem = (id) => {
@@ -91,32 +96,50 @@ const NewOrderDialog = ({
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const dialogButtons = () => (
-    <DialogActions>
-      <Button
-        onClick={activeStep === 0 ? handleClose : handleBack}
-        color="secondary"
-        variant="outlined"
-      >
-        {activeStep === 0 ? "Cancel" : "Back"}
-      </Button>
-      <Button
-        onClick={activeStep === 0 ? handleNext : handleSubmit}
-        color="primary"
-        type={activeStep === 0 ? "button" : "submit"}
-      >
-        {activeStep === 0 ? "Next" : "Submit"}
-      </Button>
-    </DialogActions>
-  );
+  const dialogButtons = () => {
+    const onClick = activeStep === 0 ? handleNext : handleSubmit;
+    const type = "button";
+    const backButton = activeStep === 0 ? "Cancel" : "Back";
+    const nextButton = activeStep === 0 ? "Next" : "Submit";
+    const nextDisabled =
+      activeStep === 0
+        ? values.name === undefined ||
+          values.name.length === 0 ||
+          values.deliveryDate === undefined ||
+          values.mobile === undefined ||
+          values.mobile.length === 0 ||
+          values.method === undefined ||
+          values.method.length === 0
+        : values.items.length === 0;
+
+    return (
+      <DialogActions>
+        <Button
+          onClick={activeStep === 0 ? handleClose : handleBack}
+          color="secondary"
+          variant="outlined"
+        >
+          {backButton}
+        </Button>
+        <Button
+          onClick={onClick}
+          color="primary"
+          type={type}
+          disabled={nextDisabled}
+        >
+          {nextButton}
+        </Button>
+      </DialogActions>
+    );
+  };
 
   const getStepContent = (stepIndex) => {
     const detailDialog = (
       <NewOrderDialogDetails
-        name={name}
-        deliveryDate={deliveryDate}
-        deliveryMethod={deliveryMethod}
-        mobile={mobile}
+        name={values.name}
+        deliveryDate={values.deliveryDate}
+        method={values.method}
+        mobile={values.mobile}
         handleSubmit={handleSubmit}
         handleChange={handleChange}
         handleDateChange={handleDateChange}
@@ -132,9 +155,11 @@ const NewOrderDialog = ({
             products={Object.values(products).filter(
               (product) => !values.items.some((item) => item.id === product.id)
             )}
+            items={values.items}
             handleSubmit={handleSubmit}
             handleChange={handleChange}
             handleAddItem={handleAddItem}
+            handleRemoveItem={handleRemoveItem}
             dialogButtons={dialogButtons}
           />
         );
@@ -146,7 +171,7 @@ const NewOrderDialog = ({
   return (
     <ThemeProvider theme={settings.themes[settings.activeTheme]}>
       <IconButton
-        onClick={handleClickOpen}
+        onClick={() => setOpen(true)}
         style={{
           color:
             parentThemePalette.type === "light"
@@ -191,4 +216,4 @@ const mapStateToProps = (state) => ({
 export default withStyles(
   {},
   { withTheme: true }
-)(connect(mapStateToProps, {})(NewOrderDialog));
+)(connect(mapStateToProps, { saveOrder })(NewOrderDialog));

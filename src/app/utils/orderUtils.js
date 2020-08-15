@@ -5,6 +5,11 @@ export const status = Object.freeze({
   pending: "pending",
 });
 
+export const method = Object.freeze({
+  delivery: "delivery",
+  pickup: "pickup",
+});
+
 export const zeroValue = currency(0, { symbol: "USD " });
 
 export const getSummaryByItem = (orders) => {

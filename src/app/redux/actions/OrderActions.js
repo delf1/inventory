@@ -34,13 +34,13 @@ export const getAllOrders = () => (dispatch) => {
 };
 
 export const saveOrder = (order) => (dispatch) => {
-  order.id
+  order.id === undefined
     ? orderApi
-        .updateOrder(order)
-        .then(() =>
+        .createOrder(order)
+        .then((res) =>
           dispatch({
             type: CREATE_ORDER_SUCCESS,
-            order,
+            order: { ...order, id: res.data.id },
           })
         )
         .catch((err) =>
@@ -50,7 +50,7 @@ export const saveOrder = (order) => (dispatch) => {
           })
         )
     : orderApi
-        .createOrder(order)
+        .updateOrder(order)
         .then(() =>
           dispatch({
             type: UPDATE_ORDER_SUCCESS,

@@ -6,11 +6,12 @@ import {
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import { method as methodEnum } from "./../utils/orderUtils";
 
 const NewOrderDialogDetails = ({
   name,
   deliveryDate,
-  deliveryMethod,
+  method,
   mobile,
   handleSubmit,
   handleChange,
@@ -32,14 +33,9 @@ const NewOrderDialogDetails = ({
             label="Customer Name"
             onChange={handleChange}
             type="text"
-            name="username"
+            name="name"
             value={name}
-            validators={[
-              "required",
-              "minStringLength: 4",
-              "maxStringLength: 9",
-            ]}
-            errorMessages={["this field is required"]}
+            errorMessages={["Customer name is required"]}
           />
 
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -52,6 +48,7 @@ const NewOrderDialogDetails = ({
               type="text"
               autoOk={true}
               value={deliveryDate}
+              format="dd MMM yyy"
               onChange={handleDateChange}
               KeyboardButtonProps={{
                 "aria-label": "change date",
@@ -68,24 +65,23 @@ const NewOrderDialogDetails = ({
             type="text"
             name="mobile"
             value={mobile}
-            validators={["required"]}
-            errorMessages={["this field is required"]}
+            errorMessages={["Phone number is required"]}
           />
           <RadioGroup
             className="mb-4"
-            value={deliveryMethod}
-            name="gender"
+            value={method}
+            name="method"
             onChange={handleChange}
             row
           >
             <FormControlLabel
-              value="Delivery"
+              value={methodEnum.delivery}
               control={<Radio color="secondary" />}
               label="Delivery"
               labelPlacement="end"
             />
             <FormControlLabel
-              value="Pickup"
+              value={methodEnum.pickup}
               control={<Radio color="secondary" />}
               label="Pickup"
               labelPlacement="end"

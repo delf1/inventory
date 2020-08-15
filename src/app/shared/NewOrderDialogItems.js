@@ -6,6 +6,13 @@ import {
   FormControl,
   InputLabel,
   Button,
+  Table,
+  TableHead,
+  TableCell,
+  TableRow,
+  TableBody,
+  IconButton,
+  Icon,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
@@ -20,27 +27,78 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const ItemsTable = ({ items, handleRemoveItem }) => {
+  return (
+    <div className="overflow-auto">
+      <Table className="product-table">
+        <TableHead>
+          <TableRow>
+            <TableCell className="px-6" colSpan={2}>
+              Name
+            </TableCell>
+            <TableCell className="px-0" colSpan={1}>
+              Quantity
+            </TableCell>
+            <TableCell className="px-0" colSpan={1}>
+              Action
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {items.map((item) => (
+            <TableRow key={item.id}>
+              <TableCell className="px-0 capitalize" colSpan={2} align="left">
+                {item.name}
+              </TableCell>
+              <TableCell className="px-0 capitalize" align="left" colSpan={1}>
+                {item.quantity}
+              </TableCell>
+              <TableCell className="px-0 capitalize" align="left" colSpan={1}>
+                <IconButton onClick={() => handleRemoveItem(item.id)}>
+                  <Icon color="error">delete</Icon>
+                </IconButton>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
+
 const NewOrderDialogItems = ({
   products,
   items,
   handleSubmit,
   handleAddItem,
+  handleRemoveItem,
   dialogButtons,
 }) => {
   const classes = useStyles();
   const formRef = useRef("form");
 
-  const [selectedItem, setSelectedItem] = useState("");
+  const [selectedItemId, setSelectedItemId] = useState("");
   const [quantity, setQuantity] = useState("");
 
   const handleItemChange = (event) => {
     const target = event.target;
-    setSelectedItem(target.value);
+    setSelectedItemId(target.value);
   };
 
   const handleQuantityChange = (event) => {
     const target = event.target;
     setQuantity(target.value);
+  };
+
+  const handleAddItemInternal = () => {
+    if (selectedItemId.length !== 0 && quantity.length !== 0 && quantity > 0) {
+      setSelectedItemId("");
+      setQuantity("");
+      handleAddItem({
+        id: selectedItemId,
+        quantity,
+      });
+    }
   };
 
   return (
@@ -56,7 +114,7 @@ const NewOrderDialogItems = ({
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={selectedItem}
+              value={selectedItemId}
               onChange={handleItemChange}
             >
               {products.map((product) => (
@@ -75,13 +133,26 @@ const NewOrderDialogItems = ({
             value={quantity}
             type="number"
             name="quantity"
-            errorMessages={["this field is required"]}
+            disabled={selectedItemId.length === 0}
+            errorMessages={["Please enter a quantity"]}
           />
         </Grid>
         <Grid item lg={3} md={3} sm={12} xs={12} className={classes.addButton}>
-          <Button onClick={() => handleAddItem(selectedItem)}>Add</Button>
+          <Button
+            onClick={handleAddItemInternal}
+            variant="outlined"
+            color="primary"
+            disabled={
+              selectedItemId.length === 0 ||
+              quantity.length === 0 ||
+              quantity < 1
+            }
+          >
+            Add
+          </Button>
         </Grid>
       </Grid>
+      <ItemsTable items={items} handleRemoveItem={handleRemoveItem} />
       {dialogButtons()}
     </ValidatorForm>
   );

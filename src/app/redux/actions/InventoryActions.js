@@ -34,9 +34,9 @@ export const getAllInventory = () => (dispatch) => {
 };
 
 export const saveInventoryItem = (inventoryItem) => (dispatch) => {
-  inventoryItem.id
+  inventoryItem.id === undefined
     ? inventoryApi
-        .updateInventoryItem(inventoryItem)
+        .createInventoryItem(inventoryItem)
         .then(() =>
           dispatch({
             type: CREATE_INVENTORY_ITEM_SUCCESS,
@@ -50,7 +50,7 @@ export const saveInventoryItem = (inventoryItem) => (dispatch) => {
           })
         )
     : inventoryApi
-        .createInventoryItem(inventoryItem)
+        .updateInventoryItem(inventoryItem)
         .then(() =>
           dispatch({
             type: UPDATE_INVENTORY_ITEM_SUCCESS,
