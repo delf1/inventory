@@ -30,6 +30,5 @@ function sleep(ms) {
 
 Mock.onGet("/api/products/").reply(async () => {
   const response = ProductsDB.productsList;
-  await sleep(1000);
   return [200, response];
 });
