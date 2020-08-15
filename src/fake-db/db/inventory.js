@@ -15,6 +15,7 @@ const InventoryDB = {
     2: {
       id: 2,
       name: "Butter",
+      available: 3.5,
       unit: "stick",
       history: [
         { id: 1, date: new Date(), quantity: 3, price: 10 },
@@ -25,6 +26,7 @@ const InventoryDB = {
     3: {
       id: 3,
       name: "Milk",
+      available: 0.7,
       unit: "carton",
       history: [{ id: 1, date: new Date(), quantity: 3, price: 8 }],
     },

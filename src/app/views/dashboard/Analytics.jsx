@@ -77,7 +77,10 @@ const Dashboard1 = ({ orders, getAllOrders, getAllProducts }) => {
             {orders.length === 0 ? (
               <h6 className="text-muted">No orders yet</h6>
             ) : (
-              orders.map((order) => <UpcomingOrder key={order.id} {...order} />)
+              orders
+                .slice(orders.length - 5, orders.length)
+                .reverse()
+                .map((order) => <UpcomingOrder key={order.id} {...order} />)
             )}
           </Grid>
 
