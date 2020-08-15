@@ -14,11 +14,7 @@ const InventoryReducer = (state = initialState, action) => {
     case CREATE_INVENTORY_ITEM_SUCCESS:
       return { ...state, [action.inventoryItem.id]: action.inventoryItem };
     case UPDATE_INVENTORY_ITEM_SUCCESS:
-      return state.map((inventoryItem) =>
-        inventoryItem.id === action.inventoryItem.id
-          ? action.inventoryItem
-          : inventoryItem
-      );
+      return { ...state, [action.inventoryItem.id]: action.inventoryItem };
     case DELETE_INVENTORY_ITEM_SUCCESS:
       return state.filter((inventoryItem) => inventoryItem.id !== action.id);
     default:

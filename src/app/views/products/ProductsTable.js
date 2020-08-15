@@ -75,7 +75,7 @@ const Row = ({ product }) => {
                     })
                     .map(({ id, name, quantity, unit, available }) => (
                       <TableRow key={id}>
-                        <TableCell>{id}</TableCell>
+                        <TableCell>{name}</TableCell>
                         <TableCell align="right">
                           {quantity} {unit}
                         </TableCell>

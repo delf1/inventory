@@ -57,12 +57,13 @@ export const saveInventoryItem = (inventoryItem) => (dispatch) => {
             inventoryItem,
           })
         )
-        .catch((err) =>
+        .catch((err) => {
+          debugger;
           dispatch({
             type: UPDATE_INVENTORY_ITEM_ERROR,
             error: err,
-          })
-        );
+          });
+        });
 };
 
 export const deleteInventoryItem = (id) => (dispatch) => {

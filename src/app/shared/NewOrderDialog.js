@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Icon,
   Button,
@@ -18,8 +18,15 @@ import Slide from "@material-ui/core/Slide";
 import NewOrderDialogDetails from "./NewOrderDialogDetails";
 import NewOrderDialogItems from "./NewOrderDialogItems";
 import { getProducts } from "./../redux/selectors/ProductSelector";
-import { saveOrder } from "./../redux/actions/OrderActions";
+import { getAllOrders, saveOrder } from "./../redux/actions/OrderActions";
+import { getAllProducts } from "./../redux/actions/ProductActions";
+import {
+  getAllInventory,
+  saveInventoryItem,
+} from "./../redux/actions/InventoryActions";
 import { status } from "../../app/utils/orderUtils";
+import { inventoryAfterOrder } from "../utils/inventoryUtils";
+import { getInventory } from "app/redux/selectors/InventorySelector";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -31,14 +38,31 @@ const NewOrderDialog = ({
   theme,
   settings,
   products,
+  inventory,
   name,
   deliveryDate = new Date(),
   mobile,
   method,
   items = [],
   saveOrder,
+  saveInventoryItem,
+  getAllOrders,
+  getAllProducts,
+  getAllInventory,
 }) => {
   const parentThemePalette = theme.palette;
+
+  useEffect(() => {
+    if (Object.keys(products).length === 0) {
+      getAllProducts();
+    }
+  }, [products, getAllProducts]);
+
+  useEffect(() => {
+    if (Object.keys(inventory).length === 0) {
+      getAllInventory();
+    }
+  }, [inventory, getAllInventory]);
 
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState({
@@ -56,13 +80,17 @@ const NewOrderDialog = ({
   };
 
   const handleSubmit = () => {
-    saveOrder({
+    const order = {
       deliveryDate: values.deliveryDate,
       items: values.items,
       customer: { name: values.name, mobile: values.mobile },
       method: values.method,
       status: status.pending,
-    });
+    };
+    saveOrder(order);
+    Object.values(
+      inventoryAfterOrder(order, products, inventory)
+    ).forEach((inventoryItem) => saveInventoryItem(inventoryItem));
   };
 
   const handleChange = (event) => {
@@ -211,9 +239,18 @@ NewOrderDialog.propTypes = {
 const mapStateToProps = (state) => ({
   settings: state.layout.settings,
   products: getProducts(state),
+  inventory: getInventory(state),
 });
 
 export default withStyles(
   {},
   { withTheme: true }
-)(connect(mapStateToProps, { saveOrder })(NewOrderDialog));
+)(
+  connect(mapStateToProps, {
+    getAllOrders,
+    getAllProducts,
+    getAllInventory,
+    saveOrder,
+    saveInventoryItem,
+  })(NewOrderDialog)
+);

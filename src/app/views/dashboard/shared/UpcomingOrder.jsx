@@ -7,12 +7,14 @@ import {
   IconButton,
   Checkbox,
   Fab,
-  Avatar,
   Hidden,
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 
-const UpcomingOrder = ({ id, deliveryDate }) => {
+const totalItems = (items) =>
+  items.reduce((acc, curr) => acc + curr.quantity, 0);
+
+const UpcomingOrder = ({ id, deliveryDate, items }) => {
   return (
     <Fragment key={id}>
       <Card className="py-2 px-4 project-card">
@@ -46,12 +48,7 @@ const UpcomingOrder = ({ id, deliveryDate }) => {
 
           <Hidden smDown>
             <Grid item xs={3}>
-              <div className="flex position-relative face-group">
-                <Avatar className="avatar" src="/assets/images/face-4.jpg" />
-                <Avatar className="avatar" src="/assets/images/face-4.jpg" />
-                <Avatar className="avatar" src="/assets/images/face-4.jpg" />
-                <Avatar className="number-avatar avatar">+3</Avatar>
-              </div>
+              <div className="text-muted">{totalItems(items)} items</div>
             </Grid>
           </Hidden>
 

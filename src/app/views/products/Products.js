@@ -3,15 +3,22 @@ import { connect } from "react-redux";
 import { Breadcrumb, SimpleCard } from "matx";
 import { Button, Grid } from "@material-ui/core";
 import { getAllProducts } from "./../../redux/actions/ProductActions";
-import { getProducts } from "./../../redux/selectors/ProductSelector";
+import { getAllInventory } from "./../../redux/actions/InventoryActions";
+import { enrichedProducts } from "./../../redux/selectors/ProductSelector";
 import ProductsTable from "./ProductsTable";
 
-const Products = ({ products, getAllProducts }) => {
+const Products = ({ products, getAllProducts, getAllInventory }) => {
   useEffect(() => {
     if (Object.keys(products).length === 0) {
       getAllProducts();
     }
   }, [products, getAllProducts]);
+
+  useEffect(() => {
+    if (Object.keys(products).length === 0) {
+      getAllInventory();
+    }
+  }, [products, getAllInventory]);
 
   return (
     <div className="m-sm-30">
@@ -36,7 +43,9 @@ const Products = ({ products, getAllProducts }) => {
 };
 
 const mapStateToProps = (state) => ({
-  products: getProducts(state),
+  products: enrichedProducts(state),
 });
 
-export default connect(mapStateToProps, { getAllProducts })(Products);
+export default connect(mapStateToProps, { getAllProducts, getAllInventory })(
+  Products
+);

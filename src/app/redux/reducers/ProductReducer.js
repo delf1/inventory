@@ -14,9 +14,7 @@ const ProductReducer = (state = initialState, action) => {
     case CREATE_PRODUCT_SUCCESS:
       return { ...state, [action.product.id]: action.product };
     case UPDATE_PRODUCT_SUCCESS:
-      return state.map((product) =>
-        product.id === action.product.id ? action.product : product
-      );
+      return { ...state, [action.product.id]: action.product };
     case DELETE_PRODUCT_SUCCESS:
       return state.filter((product) => product.id !== action.id);
     default:
